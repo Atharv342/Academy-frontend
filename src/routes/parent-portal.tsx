@@ -100,30 +100,14 @@ const testRows = [
 ];
 
 const subjectCompare = [
-  { subject: "Physics", rahul: 72, batch: 68 },
-  { subject: "Chemistry", rahul: 84, batch: 71 },
-  { subject: "Maths", rahul: 78, batch: 74 },
+  { subject: "Mechanics", rahul: 70, batch: 66 },
+  { subject: "Rotational", rahul: 48, batch: 61 },
+  { subject: "Organic", rahul: 86, batch: 70 },
+  { subject: "Physical Chem", rahul: 80, batch: 72 },
+  { subject: "Calculus", rahul: 58, batch: 67 },
+  { subject: "Algebra", rahul: 84, batch: 75 },
 ];
-
-const assignments = [
-  { title: "Rotational Motion — Sheet 4", subject: "Physics", due: "28 Sep", status: "Pending" },
-  { title: "Thermodynamics Worksheet", subject: "Chemistry", due: "26 Sep", status: "Completed" },
-  { title: "Definite Integration Set B", subject: "Mathematics", due: "27 Sep", status: "Pending" },
-  { title: "Organic Naming Drill", subject: "Chemistry", due: "22 Sep", status: "Completed" },
-];
-
-const notes = [
-  { title: "Rotational Dynamics — Master Notes", subject: "Physics", size: "2.4 MB" },
-  { title: "Chemical Bonding Revision", subject: "Chemistry", size: "1.8 MB" },
-  { title: "Integration Formula Bank", subject: "Mathematics", size: "820 KB" },
-  { title: "JEE Main 2025 Solved Paper", subject: "PCM", size: "3.1 MB" },
-];
-
-const noticeFeed = [
-  { title: "Parent–Teacher Meeting", body: "Saturday 4 Oct, 10:00 AM at the main campus hall." },
-  { title: "JEE Mock 3 scheduled", body: "Sunday 5 Oct, 9:00 AM. Reporting time 8:30 AM." },
-  { title: "Diwali break", body: "Classes pause 18–22 Oct. Self-study packets will be shared." },
-];
+LINES_BETWEEN_PLACEHOLDER
 
 const initialChat = [
   { from: "faculty" as const, name: "Prof. Deshpande (Physics)", text: "Rahul's numericals have improved, but rotational motion still needs drilling." },
@@ -142,6 +126,7 @@ function ParentPortal() {
   const [chat, setChat] = useState(initialChat);
   const [draft, setDraft] = useState("");
   const [paid, setPaid] = useState(false);
+  const { notices } = usePortal();
   const [payModal, setPayModal] = useState(false);
 
   const filteredTests =
@@ -439,10 +424,10 @@ function ParentPortal() {
                       <h2 className="font-display text-lg font-semibold">Rahul vs batch average</h2>
                       <div className="mt-6 h-64">
                         <ResponsiveContainer width="100%" height="100%">
-                          <BarChart data={subjectCompare}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                            <XAxis dataKey="subject" stroke="var(--muted-foreground)" fontSize={12} />
-                            <YAxis stroke="var(--muted-foreground)" fontSize={12} />
+                          <RadarChart data={subjectCompare} outerRadius="75%">
+                            <PolarGrid stroke="var(--border)" />
+                            <PolarAngleAxis dataKey="subject" stroke="var(--muted-foreground)" fontSize={11} />
+                            <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
                             <Tooltip
                               contentStyle={{
                                 background: "var(--popover)",
@@ -451,9 +436,9 @@ function ParentPortal() {
                               }}
                             />
                             <Legend />
-                            <Bar dataKey="rahul" name="Rahul" fill="var(--chart-1)" radius={[6, 6, 0, 0]} />
-                            <Bar dataKey="batch" name="Batch avg" fill="var(--chart-3)" radius={[6, 6, 0, 0]} />
-                          </BarChart>
+                            <Radar dataKey="batch" name="Batch avg" stroke="var(--chart-3)" fill="var(--chart-3)" fillOpacity={0.2} />
+                            <Radar dataKey="rahul" name="Rahul" stroke="var(--chart-1)" fill="var(--chart-1)" fillOpacity={0.35} />
+                          </RadarChart>
                         </ResponsiveContainer>
                       </div>
                     </GlassCard>
@@ -596,7 +581,7 @@ function ParentPortal() {
                   <GlassCard className="lg:col-span-2">
                     <h2 className="font-display text-lg font-semibold">Institute notices</h2>
                     <div className="mt-5 space-y-3">
-                      {noticeFeed.map((n) => (
+                      {notices.map((n) => (
                         <div key={n.title} className="rounded-2xl bg-secondary/40 px-4 py-3">
                           <p className="text-sm font-semibold text-primary">{n.title}</p>
                           <p className="mt-1 text-xs text-muted-foreground">{n.body}</p>
