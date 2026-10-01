@@ -1,11 +1,17 @@
-import topper1 from "@/assets/topper-1.jpg";
-import topper2 from "@/assets/topper-2.jpg";
-import topper3 from "@/assets/topper-3.jpg";
-import topper4 from "@/assets/topper-4.jpg";
-import batch1 from "@/assets/batch-1.jpg";
-import batch2 from "@/assets/batch-2.jpg";
-import batch3 from "@/assets/batch-3.jpg";
-import batch4 from "@/assets/batch-4.jpg";
+import i1 from "@/assets/results/ind-1.json";
+import i2 from "@/assets/results/ind-2.json";
+import i3 from "@/assets/results/ind-3.json";
+import i4 from "@/assets/results/ind-4.json";
+import g1 from "@/assets/results/group-1.json";
+import g2 from "@/assets/results/group-2.json";
+import g3 from "@/assets/results/group-3.json";
+import g4 from "@/assets/results/group-4.json";
+import g5 from "@/assets/results/group-5.json";
+import g6 from "@/assets/results/group-6.json";
+
+const topper1 = i1.url, topper2 = i2.url, topper3 = i3.url, topper4 = i4.url;
+const batch1 = g1.url, batch2 = g2.url, batch3 = g3.url, batch4 = g4.url;
+const batch5 = g5.url, batch6 = g6.url;
 
 export type ExamName = "JEE Advanced" | "JEE Main" | "MHT-CET" | "NEET";
 
@@ -153,7 +159,7 @@ export const batchPhotos: BatchPhoto[] = [
     caption: "Second attempt, first-rate results",
     stat: "92% improvement over last attempt",
     category: "Batch 2026 Highlights",
-    image: batch2,
+    image: batch5,
   },
   {
     id: "b6",
@@ -161,7 +167,7 @@ export const batchPhotos: BatchPhoto[] = [
     caption: "Class 11 integrated batch orientation",
     stat: "240+ students enrolled",
     category: "Classroom Champions",
-    image: batch1,
+    image: batch6,
   },
 ];
 
