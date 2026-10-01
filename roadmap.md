@@ -1,7 +1,8 @@
 # Roadmap
 - [x] Public academy portal + parent portal (brief 1)
-- [ ] Use real Results.zip photos for topper cards and batch gallery
-- [ ] Login modal with demo shortcuts + 4-way role switcher
-- [ ] Student portal (overview, materials, assignments, tests, timetable)
-- [ ] Teacher/admin portal (attendance marking, marks matrix, uploader, notice broadcaster)
-- [ ] Shared notice feed + toasts across portals
+- [x] Use real Results.zip photos for topper cards and batch gallery
+- [x] Login modal with demo shortcuts + 4-way role switcher
+- [x] Student portal (overview, materials, assignments, tests, timetable)
+- [x] Teacher/admin portal (attendance marking, marks matrix, uploader, notice broadcaster)
+- [x] Shared notice feed + toasts across portals
+- [ ] Real topper names/results (waiting on user)

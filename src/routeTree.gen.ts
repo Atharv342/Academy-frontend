@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParentPortalRouteImport } from './routes/parent-portal'
+import { Route as StudentPortalRouteImport } from './routes/student-portal'
+import { Route as TeacherPortalRouteImport } from './routes/teacher-portal'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +24,50 @@ const ParentPortalRoute = ParentPortalRouteImport.update({
   path: '/parent-portal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudentPortalRoute = StudentPortalRouteImport.update({
+  id: '/student-portal',
+  path: '/student-portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeacherPortalRoute = TeacherPortalRouteImport.update({
+  id: '/teacher-portal',
+  path: '/teacher-portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/parent-portal': typeof ParentPortalRoute
+  '/student-portal': typeof StudentPortalRoute
+  '/teacher-portal': typeof TeacherPortalRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/parent-portal': typeof ParentPortalRoute
+  '/student-portal': typeof StudentPortalRoute
+  '/teacher-portal': typeof TeacherPortalRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/parent-portal': typeof ParentPortalRoute
+  '/student-portal': typeof StudentPortalRoute
+  '/teacher-portal': typeof TeacherPortalRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/parent-portal'
+  fullPaths: '/' | '/parent-portal' | '/student-portal' | '/teacher-portal'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/parent-portal'
-  id: '__root__' | '/' | '/parent-portal'
+  to: '/' | '/parent-portal' | '/student-portal' | '/teacher-portal'
+  id:
+    '__root__' | '/' | '/parent-portal' | '/student-portal' | '/teacher-portal'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ParentPortalRoute: typeof ParentPortalRoute
+  StudentPortalRoute: typeof StudentPortalRoute
+  TeacherPortalRoute: typeof TeacherPortalRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +86,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParentPortalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/student-portal': {
+      id: '/student-portal'
+      path: '/student-portal'
+      fullPath: '/student-portal'
+      preLoaderRoute: typeof StudentPortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teacher-portal': {
+      id: '/teacher-portal'
+      path: '/teacher-portal'
+      fullPath: '/teacher-portal'
+      preLoaderRoute: typeof TeacherPortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ParentPortalRoute: ParentPortalRoute,
+  StudentPortalRoute: StudentPortalRoute,
+  TeacherPortalRoute: TeacherPortalRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
