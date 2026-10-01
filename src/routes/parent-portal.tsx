@@ -27,11 +27,17 @@ import {
   XAxis,
   YAxis,
   Legend,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
 } from "recharts";
 import { SiteNav } from "@/components/SiteNav";
 import { Counter, Modal, Reveal } from "@/components/motion";
 import student from "@/assets/topper-1.jpg";
 import { celebrate } from "@/lib/celebrate";
+import { usePortal } from "@/lib/portal-store";
 
 export const Route = createFileRoute("/parent-portal")({
   head: () => ({
@@ -107,7 +113,12 @@ const subjectCompare = [
   { subject: "Calculus", rahul: 58, batch: 67 },
   { subject: "Algebra", rahul: 84, batch: 75 },
 ];
-LINES_BETWEEN_PLACEHOLDER
+const assignments = [
+  { title: "Rotational Dynamics DPP 7", subject: "Physics", due: "3 Oct", status: "Pending" },
+  { title: "Organic Named Reactions Sheet", subject: "Chemistry", due: "30 Sep", status: "Completed" },
+  { title: "Definite Integration Exercise 4B", subject: "Mathematics", due: "2 Oct", status: "Pending" },
+  { title: "Electrostatics Revision Set", subject: "Physics", due: "27 Sep", status: "Completed" },
+];
 
 const initialChat = [
   { from: "faculty" as const, name: "Prof. Deshpande (Physics)", text: "Rahul's numericals have improved, but rotational motion still needs drilling." },
