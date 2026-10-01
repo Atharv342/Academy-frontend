@@ -137,7 +137,7 @@ function ParentPortal() {
   const [chat, setChat] = useState(initialChat);
   const [draft, setDraft] = useState("");
   const [paid, setPaid] = useState(false);
-  const { notices } = usePortal();
+  const { notices, materials: notes } = usePortal();
   const [payModal, setPayModal] = useState(false);
 
   const filteredTests =
