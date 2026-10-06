@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { OmrScanner } from "@/components/OmrScanner";
 import { AnimatePresence, motion } from "framer-motion";
-import { CalendarCheck, Megaphone, Table2, Upload } from "lucide-react";
+import { CalendarCheck, FileCheck, Megaphone, Table2, Upload } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { SiteNav } from "@/components/SiteNav";
@@ -10,9 +11,9 @@ export const Route = createFileRoute("/teacher-portal")({
   head: () => ({
     meta: [
       { title: "Teacher & Admin Portal — Koyana Academy" },
-      { name: "description", content: "Mark attendance, enter marks, upload study material and broadcast notices at Koyana Academy." },
+      { name: "description", content: "Mark attendance, enter marks, scan OMR sheets, upload study material and broadcast notices at Koyana Academy." },
       { property: "og:title", content: "Teacher & Admin Portal — Koyana Academy" },
-      { property: "og:description", content: "Attendance, marks, uploads and notices for Koyana Academy faculty." },
+      { property: "og:description", content: "Attendance, marks, OMR evaluation, uploads and notices for Koyana Academy faculty." },
     ],
   }),
   component: TeacherPortal,
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/teacher-portal")({
 const tabs = [
   { id: "attendance", label: "Attendance", icon: CalendarCheck },
   { id: "marks", label: "Marks Matrix", icon: Table2 },
+  { id: "omr", label: "OMR Auto-Grading", icon: FileCheck },
   { id: "upload", label: "Upload Material", icon: Upload },
   { id: "notices", label: "Broadcast Notice", icon: Megaphone },
 ] as const;
@@ -67,9 +69,8 @@ function TeacherPortal() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${
-                tab === t.id ? "neon-surface" : "glass text-muted-foreground"
-              }`}
+              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${tab === t.id ? "neon-surface" : "glass text-muted-foreground"
+                }`}
             >
               <t.icon className="size-4" /> {t.label}
             </button>
@@ -145,6 +146,8 @@ function TeacherPortal() {
                 </button>
               </>
             )}
+
+            {tab === "omr" && <OmrScanner />}
 
             {tab === "upload" && (
               <div className="grid gap-6 lg:grid-cols-2">
