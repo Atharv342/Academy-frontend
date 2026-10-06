@@ -41,7 +41,7 @@ function TeacherPortal() {
 
   function saveMaterial(e: FormEvent) {
     e.preventDefault();
-    if (!mat.title.trim()) return toast.error("Add a title");
+    if (!mat.title.trim()) { toast.error("Add a title"); return; }
     addMaterial({ ...mat, cls: "Class 12", size: "1.0 MB" });
     setMat({ ...mat, title: "", topic: "" });
     toast.success("Material published to students");
@@ -49,7 +49,7 @@ function TeacherPortal() {
 
   function sendNotice(e: FormEvent) {
     e.preventDefault();
-    if (!notice.title.trim() || !notice.body.trim()) return toast.error("Fill in title and message");
+    if (!notice.title.trim() || !notice.body.trim()) { toast.error("Fill in title and message"); return; }
     addNotice(notice);
     setNotice({ title: "", body: "", audience: "All" });
     toast.success("Notice sent to student and parent portals");

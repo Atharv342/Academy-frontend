@@ -113,12 +113,12 @@ function StudentPortal() {
                     { l: "Attendance", v: 92, s: "%" },
                     { l: "Last mock", v: 86, s: "%" },
                     { l: "Pending tasks", v: assignments.filter((a) => !a.done).length, s: "" },
-                    { l: "Batch rank", v: 15, p: "#" },
+                    { l: "Batch rank", v: 15, p: "#", s: "" },
                   ].map((m) => (
                     <Card key={m.l}>
                       <p className="text-xs uppercase tracking-widest text-muted-foreground">{m.l}</p>
                       <p className="neon-text mt-2 font-display text-3xl font-bold">
-                        <Counter value={m.v} prefix={m.p} suffix={m.s} />
+                        <Counter value={m.v} prefix={m.p ?? ""} suffix={m.s} />
                       </p>
                     </Card>
                   ))}
@@ -222,7 +222,7 @@ function StudentPortal() {
                   ))}
                 </div>
                 <div className="mt-5 space-y-3">
-                  {timetable[day].map((s) => (
+                  {(timetable[day] ?? []).map((s) => (
                     <div key={s.time} className="flex items-center gap-4 rounded-2xl bg-secondary/40 px-4 py-3">
                       <span className="font-display text-lg font-bold text-primary">{s.time}</span>
                       <span className="text-sm font-medium">{s.subject}</span>
