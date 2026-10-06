@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { UploadCloud, FileType, CheckCircle, Loader2, Play, FileCheck, Download, Search, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 
 interface QuestionDetail {
     q: number;
@@ -45,78 +46,64 @@ export const OmrScanner = () => {
         if (e.target.files && e.target.files.length > 0) {
             const files = Array.from(e.target.files);
             setStudentFiles(files);
-            // Create a preview of the first file for the demo animation
+
+            // Create a preview of the first file for the UI animation
             if (files[0].type.startsWith('image/')) {
                 setPreviewUrl(URL.createObjectURL(files[0]));
             }
         }
     };
 
-    const handleProcessOMR = () => {
+    const handleProcessOMR = async () => {
         if (!answerKey || studentFiles.length === 0) return;
 
         setIsScanning(true);
         setScanStep(0);
         setResults(null);
 
-        // Simulate technical scanning steps
-        const interval = setInterval(() => {
-            setScanStep((prev) => {
-                if (prev >= scanLogs.length - 1) {
-                    clearInterval(interval);
-                    finishProcessing();
-                    return prev;
-                }
-                return prev + 1;
-            });
-        }, 800); // Progress log every 800ms
-    };
+        // 1. Setup the terminal animation to run independently while the API processes
+        const terminalInterval = setInterval(() => {
+            setScanStep((prev) => (prev >= scanLogs.length - 2 ? prev : prev + 1));
+        }, 800);
 
-    const finishProcessing = () => {
-        setTimeout(() => {
+        try {
+            // 2. Prepare the files for transport to the backend
+            const formData = new FormData();
+            formData.append('answerKey', answerKey);
+
+            studentFiles.forEach((file) => {
+                formData.append('studentSheets', file);
+            });
+
+            // 3. Call the actual backend endpoint (Update URL to match your server when ready)
+            const response = await fetch('http://localhost:5000/api/omr/evaluate', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to process OMR sheets on the server.");
+            }
+
+            // 4. Parse the real results from the server
+            const data: ExamResult[] = await response.json();
+
+            // 5. Complete the terminal animation and show results
+            clearInterval(terminalInterval);
+            setScanStep(scanLogs.length - 1);
+
+            setTimeout(() => {
+                setIsScanning(false);
+                setResults(data);
+                toast.success("OMR evaluation completed successfully");
+            }, 500);
+
+        } catch (error) {
+            console.error("OMR Processing Error:", error);
+            clearInterval(terminalInterval);
             setIsScanning(false);
-
-            const generatedResults: ExamResult[] = studentFiles.map((file, idx) => {
-                const rawName = file.name.replace(/\.[^/.]+$/, "");
-                const parts = rawName.split(/[-_ ]/);
-
-                let roll = `10${idx + 1}`;
-                let name = rawName;
-
-                if (parts.length >= 2 && !isNaN(Number(parts[0]))) {
-                    roll = parts[0];
-                    name = parts.slice(1).join(" ");
-                }
-
-                name = name.replace(/\b\w/g, (l) => l.toUpperCase()) || `Student ${idx + 1}`;
-
-                // Generate a realistic 10-question evaluation
-                const options = ['A', 'B', 'C', 'D'];
-                let correctCount = 0;
-                const details: QuestionDetail[] = Array.from({ length: 10 }).map((_, qIdx) => {
-                    const marked = options[Math.floor(Math.random() * options.length)];
-                    const correct = Math.random() > 0.3 ? marked : options[Math.floor(Math.random() * options.length)]; // ~70% chance of being right
-                    const isRight = marked === correct;
-                    if (isRight) correctCount++;
-
-                    return { q: qIdx + 1, marked, correct, isRight };
-                });
-
-                const score = correctCount * 10; // Out of 100
-
-                return {
-                    roll,
-                    name,
-                    score,
-                    total: 100,
-                    accuracy: `${score}%`,
-                    status: score >= 50 ? 'Pass' : 'Fail',
-                    details
-                };
-            });
-
-            setResults(generatedResults);
-        }, 500);
+            toast.error("Failed to process sheets. Ensure the backend is running.");
+        }
     };
 
     return (
@@ -126,7 +113,7 @@ export const OmrScanner = () => {
                     <FileCheck className="text-primary size-7" /> Optical Mark Recognition Engine
                 </h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Demonstrating client-side computer vision evaluation and accuracy mapping.
+                    Upload answer key and student answer sheets (single JPG/PNG or bulk ZIP archive).
                 </p>
             </div>
 
@@ -152,7 +139,7 @@ export const OmrScanner = () => {
 
                     <label className="inline-block cursor-pointer rounded-full bg-primary/10 text-primary px-4 py-2 text-xs font-semibold hover:bg-primary/20 transition-colors">
                         Select Student Sheets
-                        <input type="file" multiple accept="image/*" className="hidden" onChange={handleFileChange} />
+                        <input type="file" multiple accept="image/*,.zip" className="hidden" onChange={handleFileChange} />
                     </label>
                     {studentFiles.length > 0 && <p className="mt-3 text-xs text-emerald-400 font-medium flex items-center justify-center gap-1"><CheckCircle size={14} /> {studentFiles.length} file(s) selected</p>}
                 </div>
@@ -182,14 +169,12 @@ export const OmrScanner = () => {
                             {/* Image with laser scanner */}
                             <div className="relative w-48 h-64 bg-secondary/50 rounded-lg overflow-hidden border border-border">
                                 <img src={previewUrl} alt="Scanning" className="w-full h-full object-cover opacity-60 grayscale" />
-                                {/* Laser Line */}
                                 <motion.div
                                     initial={{ top: 0 }}
                                     animate={{ top: '100%' }}
                                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                                     className="absolute left-0 right-0 h-1 bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)] z-10"
                                 />
-                                {/* Grid Overlay to look technical */}
                                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay"></div>
                             </div>
 
