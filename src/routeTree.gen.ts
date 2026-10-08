@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExamRegistrationRouteImport } from './routes/exam-registration'
 import { Route as ParentPortalRouteImport } from './routes/parent-portal'
 import { Route as StudentPortalRouteImport } from './routes/student-portal'
 import { Route as TeacherPortalRouteImport } from './routes/teacher-portal'
+import { Route as ExamExamIdRouteImport } from './routes/exam.$examId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExamRegistrationRoute = ExamRegistrationRouteImport.update({
+  id: '/exam-registration',
+  path: '/exam-registration',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParentPortalRoute = ParentPortalRouteImport.update({
@@ -34,40 +41,71 @@ const TeacherPortalRoute = TeacherPortalRouteImport.update({
   path: '/teacher-portal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamExamIdRoute = ExamExamIdRouteImport.update({
+  id: '/exam/$examId',
+  path: '/exam/$examId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exam-registration': typeof ExamRegistrationRoute
   '/parent-portal': typeof ParentPortalRoute
   '/student-portal': typeof StudentPortalRoute
   '/teacher-portal': typeof TeacherPortalRoute
+  '/exam/$examId': typeof ExamExamIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exam-registration': typeof ExamRegistrationRoute
   '/parent-portal': typeof ParentPortalRoute
   '/student-portal': typeof StudentPortalRoute
   '/teacher-portal': typeof TeacherPortalRoute
+  '/exam/$examId': typeof ExamExamIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exam-registration': typeof ExamRegistrationRoute
   '/parent-portal': typeof ParentPortalRoute
   '/student-portal': typeof StudentPortalRoute
   '/teacher-portal': typeof TeacherPortalRoute
+  '/exam/$examId': typeof ExamExamIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/parent-portal' | '/student-portal' | '/teacher-portal'
+  fullPaths:
+    | '/'
+    | '/exam-registration'
+    | '/parent-portal'
+    | '/student-portal'
+    | '/teacher-portal'
+    | '/exam/$examId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/parent-portal' | '/student-portal' | '/teacher-portal'
+  to:
+    | '/'
+    | '/exam-registration'
+    | '/parent-portal'
+    | '/student-portal'
+    | '/teacher-portal'
+    | '/exam/$examId'
   id:
-    '__root__' | '/' | '/parent-portal' | '/student-portal' | '/teacher-portal'
+    | '__root__'
+    | '/'
+    | '/exam-registration'
+    | '/parent-portal'
+    | '/student-portal'
+    | '/teacher-portal'
+    | '/exam/$examId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExamRegistrationRoute: typeof ExamRegistrationRoute
   ParentPortalRoute: typeof ParentPortalRoute
   StudentPortalRoute: typeof StudentPortalRoute
   TeacherPortalRoute: typeof TeacherPortalRoute
+  ExamExamIdRoute: typeof ExamExamIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -77,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exam-registration': {
+      id: '/exam-registration'
+      path: '/exam-registration'
+      fullPath: '/exam-registration'
+      preLoaderRoute: typeof ExamRegistrationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/parent-portal': {
@@ -100,14 +145,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeacherPortalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exam/$examId': {
+      id: '/exam/$examId'
+      path: '/exam/$examId'
+      fullPath: '/exam/$examId'
+      preLoaderRoute: typeof ExamExamIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExamRegistrationRoute: ExamRegistrationRoute,
   ParentPortalRoute: ParentPortalRoute,
   StudentPortalRoute: StudentPortalRoute,
   TeacherPortalRoute: TeacherPortalRoute,
+  ExamExamIdRoute: ExamExamIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -63,6 +63,15 @@ function TeacherPortal() {
       <main className="mx-auto max-w-6xl px-4 pb-20 pt-28">
         <h1 className="font-display text-3xl font-bold">Faculty desk — Prof. Deshpande</h1>
         <p className="text-sm text-muted-foreground">JEE Excel Batch A1 · 6 students shown (demo)</p>
+        <button
+          onClick={() => {
+            addNotice({ title: "Mock exam registration has started", body: "Register and book your slot for JEE Main, MHT-CET and NEET mocks on the Exams page.", audience: "All" });
+            toast.success("Registration notice broadcast");
+          }}
+          className="neon-surface mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+        >
+          <Megaphone className="size-4" /> Announce mock exam registration
+        </button>
 
         <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
           {tabs.map((t) => (
