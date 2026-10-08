@@ -7,6 +7,7 @@ import { Modal } from "@/components/motion";
 
 const modes = [
   { to: "/", label: "Academy", short: "Home" },
+  { to: "/exam-registration", label: "Exams", short: "Exams" },
   { to: "/student-portal", label: "Student", short: "Student" },
   { to: "/parent-portal", label: "Parent", short: "Parent" },
   { to: "/teacher-portal", label: "Teacher", short: "Teacher" },

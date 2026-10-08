@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { BookOpen, CalendarDays, CheckCircle2, ClipboardList, Download, LayoutDashboard, TrendingUp } from "lucide-react";
+import { BookOpen, CalendarDays, CheckCircle2, ClipboardList, Download, LayoutDashboard, ShieldCheck, TrendingUp } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
@@ -26,6 +26,7 @@ const tabs = [
   { id: "materials", label: "Study Material", icon: BookOpen },
   { id: "assignments", label: "Assignments", icon: ClipboardList },
   { id: "tests", label: "Tests", icon: TrendingUp },
+  { id: "exams", label: "Mock Exams", icon: ShieldCheck },
   { id: "timetable", label: "Timetable", icon: CalendarDays },
 ] as const;
 type TabId = (typeof tabs)[number]["id"];
@@ -59,7 +60,7 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
 }
 
 function StudentPortal() {
-  const { materials, notices } = usePortal();
+  const { materials, notices, exams, registrations, results } = usePortal();
   const [tab, setTab] = useState<TabId>("overview");
   const [subject, setSubject] = useState("All");
   const [assignments, setAssignments] = useState(initialAssignments);
@@ -231,6 +232,40 @@ function StudentPortal() {
                   ))}
                 </div>
               </Card>
+            )}
+
+            {tab === "exams" && (
+              <div className="space-y-4">
+                <Card className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h2 className="font-display text-lg font-semibold">Online proctored mock exams</h2>
+                    <p className="text-xs text-muted-foreground">Register and book a slot, then take the exam here.</p>
+                  </div>
+                  <Link to="/exam-registration" className="neon-surface rounded-full px-4 py-2 text-sm font-semibold">Register for exams</Link>
+                </Card>
+                {exams.map((e) => {
+                  const reg = registrations.find((r) => r.examId === e.id);
+                  const res = results.find((r) => r.examId === e.id);
+                  const slot = e.slots.find((s) => s.id === reg?.slotId);
+                  return (
+                    <Card key={e.id} className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-semibold">{e.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {e.pattern} · {e.durationMin} min · {reg ? `Hall ticket ${reg.hallTicket} · ${slot?.date} ${slot?.time}` : `Registration closes ${e.regCloses}`}
+                        </p>
+                      </div>
+                      {res ? (
+                        <span className="rounded-full bg-success/15 px-3 py-1.5 text-xs font-semibold text-success">Score {res.score}/{res.max}</span>
+                      ) : reg ? (
+                        <Link to="/exam/$examId" params={{ examId: e.id }} className="neon-surface rounded-full px-4 py-1.5 text-xs font-semibold">Start exam</Link>
+                      ) : (
+                        <Link to="/exam-registration" className="glass rounded-full px-4 py-1.5 text-xs font-semibold">Book slot</Link>
+                      )}
+                    </Card>
+                  );
+                })}
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
