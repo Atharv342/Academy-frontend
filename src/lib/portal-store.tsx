@@ -12,6 +12,7 @@ export type Registration = {
   cls: string;
   email: string;
   hallTicket: string;
+  studentId: string;
 };
 export type ExamResult = { examId: string; score: number; max: number; correct: number; wrong: number; skipped: number; violations: number };
 
@@ -38,6 +39,7 @@ type Store = {
   addMaterial: (m: Omit<Material, "id">) => void;
   exams: Exam[];
   registrations: Registration[];
+  addExam: (e: Exam) => void;
   register: (r: Omit<Registration, "id" | "hallTicket">) => Registration;
   results: ExamResult[];
   addResult: (r: ExamResult) => void;
@@ -79,6 +81,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         exams,
         registrations,
         register,
+        addExam: (e) => setExams((l) => [e, ...l.filter((x) => x.id !== e.id)]),
         results,
         addResult: (r) => setResults((l) => [...l.filter((x) => x.examId !== r.examId), r]),
       }}

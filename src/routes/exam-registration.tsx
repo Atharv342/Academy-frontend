@@ -14,7 +14,7 @@ export const Route = createFileRoute("/exam-registration")({
       { title: "Mock Exam Registration — Koyana Academy" },
       { name: "description", content: "Register for JEE Main, MHT-CET and NEET mock exams and book your exam slot at Koyana Academy." },
       { property: "og:title", content: "Mock Exam Registration — Koyana Academy" },
-      { property: "og:description", content: "Students from any college can book a slot for online proctored JEE, CET and NEET mocks." },
+      { property: "og:description", content: "Enrolled Koyana Academy students can book a slot for online proctored JEE, CET and NEET mocks." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -28,7 +28,7 @@ function ExamRegistration() {
   const { exams, registrations, register } = usePortal();
   const [examId, setExamId] = useState<string | null>(null);
   const [slotId, setSlotId] = useState("");
-  const [form, setForm] = useState({ name: "Rahul Patil", college: "", cls: "Class 12", email: "" });
+  const [form, setForm] = useState({ name: "Rahul Patil", college: "", cls: "Class 12", email: "", studentId: "KA-2026-0415" });
   const [done, setDone] = useState<Registration | null>(null);
   const exam = exams.find((e) => e.id === examId);
 
@@ -37,6 +37,7 @@ function ExamRegistration() {
     if (!exam) return;
     if (!slotId) { toast.error("Pick a slot"); return; }
     if (!form.name.trim() || !form.college.trim() || !form.email.includes("@")) { toast.error("Fill name, college and a valid email"); return; }
+    if (!/^KA-\d{4}-\d{4}$/.test(form.studentId.trim().toUpperCase())) { toast.error("Mock exams are only for enrolled Koyana / NYT Academy students. Enter your Academy ID (e.g. KA-2026-0415) or apply via Admissions."); return; }
     const reg = register({ examId: exam.id, slotId, ...form });
     setExamId(null);
     setDone(reg);
@@ -50,7 +51,7 @@ function ExamRegistration() {
         <p className="text-xs font-semibold uppercase tracking-widest text-primary">Registration open</p>
         <h1 className="mt-2 font-display text-4xl font-bold">Mock Exam Registration</h1>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          Open to students from any college or class. Pick an exam, book a slot, and take the online proctored test from your Student Portal.
+          Only for enrolled Koyana / NYT Academy students — you need your Academy ID (e.g. KA-2026-0415). Not enrolled yet? Apply through Admissions. Pick an exam, book a slot, and take the online proctored test from your Student Portal.
         </p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
@@ -68,7 +69,7 @@ function ExamRegistration() {
                 <h2 className="mt-3 font-display text-lg font-semibold">{e.name}</h2>
                 <p className="mt-1 text-xs text-muted-foreground">{e.description}</p>
                 <div className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-                  <p className="flex items-center gap-2"><Clock className="size-3.5" /> {e.durationMin} min · {e.questions.length} questions · +{e.marking.correct}/{e.marking.wrong}</p>
+                  <p className="flex items-center gap-2"><Clock className="size-3.5" /> {e.durationMin} min · {e.questions.length} questions · {e.questions.some((q) => q.marks) ? "variable marking" : `+${e.marking.correct}/${e.marking.wrong}`}</p>
                   <p className="flex items-center gap-2"><CalendarClock className="size-3.5" /> Registration closes {e.regCloses}</p>
                   <p className="flex items-center gap-2"><Users className="size-3.5" /> {e.slots.length} slots available</p>
                 </div>
@@ -117,6 +118,7 @@ function ExamRegistration() {
               })}
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <input className={input} placeholder="Academy student ID (KA-2026-XXXX)" value={form.studentId} onChange={(e) => setForm({ ...form, studentId: e.target.value })} />
               <input className={input} placeholder="Full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
               <input className={input} placeholder="College / school" value={form.college} onChange={(e) => setForm({ ...form, college: e.target.value })} />
               <select className={input} value={form.cls} onChange={(e) => setForm({ ...form, cls: e.target.value })}>

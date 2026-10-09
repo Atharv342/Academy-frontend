@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { maxMarks, qMarks } from "@/data/exams";
 import { AlertTriangle, Camera, Flag, Maximize, ShieldCheck, Timer } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -66,14 +67,14 @@ function ExamPage() {
   function finish(auto = false) {
     if (!exam || submittedRef.current) return;
     submittedRef.current = true;
-    let correct = 0, wrong = 0;
+    let correct = 0, wrong = 0, score = 0;
     exam.questions.forEach((q) => {
       const a = answers[q.id];
       if (a === undefined) return;
-      if (a === q.answer) correct++; else wrong++;
+      const m = qMarks(exam, q);
+      if (a === q.answer) { correct++; score += m.correct; } else { wrong++; score += m.wrong; }
     });
-    const score = correct * exam.marking.correct + wrong * exam.marking.wrong;
-    addResult({ examId: exam.id, score, max: exam.questions.length * exam.marking.correct, correct, wrong, skipped: exam.questions.length - correct - wrong, violations });
+    addResult({ examId: exam.id, score, max: maxMarks(exam), correct, wrong, skipped: exam.questions.length - correct - wrong, violations });
     streamRef.current?.getTracks().forEach((t) => t.stop());
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     setStarted(false);
@@ -142,7 +143,7 @@ function ExamPage() {
         <h1 className="font-display text-2xl font-bold">{exam.name}</h1>
         <p className="text-sm text-muted-foreground">Hall ticket {reg.hallTicket} · Slot {slot?.date} {slot?.time}</p>
         <ul className="mt-5 space-y-2 text-left text-sm text-muted-foreground">
-          <li>• {exam.questions.length} questions · {exam.durationMin} minutes · +{exam.marking.correct} correct, {exam.marking.wrong} wrong</li>
+          <li>• {exam.questions.length} questions · {exam.durationMin} minutes · marking varies per question (shown on each question)</li>
           <li className="flex gap-2"><Camera className="size-4 shrink-0" /> Your camera stays on during the test</li>
           <li className="flex gap-2"><Maximize className="size-4 shrink-0" /> The exam runs in full screen — leaving it or switching tabs is a warning</li>
           <li className="flex gap-2"><AlertTriangle className="size-4 shrink-0" /> {MAX_VIOLATIONS} warnings auto-submit the exam</li>
@@ -182,7 +183,7 @@ function ExamPage() {
 
       <div className="mx-auto grid max-w-6xl gap-5 p-4 md:grid-cols-[1fr_260px]">
         <section className="glass rounded-3xl p-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{q.subject} · Question {idx + 1}</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{q.subject} · Question {idx + 1} · +{qMarks(exam, q).correct} / {qMarks(exam, q).wrong}</p>
           <p className="mt-3 text-lg font-medium">{q.text}</p>
           <div className="mt-5 space-y-2">
             {q.options.map((o, i) => (

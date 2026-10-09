@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { OmrScanner } from "@/components/OmrScanner";
+import { TestBuilder } from "@/components/TestBuilder";
 import { AnimatePresence, motion } from "framer-motion";
-import { CalendarCheck, FileCheck, Megaphone, Table2, Upload } from "lucide-react";
+import { CalendarCheck, ClipboardList, FileCheck, Megaphone, Table2, Upload } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { SiteNav } from "@/components/SiteNav";
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/teacher-portal")({
 
 const tabs = [
   { id: "attendance", label: "Attendance", icon: CalendarCheck },
+  { id: "tests", label: "Test Creator", icon: ClipboardList },
   { id: "marks", label: "Marks Matrix", icon: Table2 },
   { id: "omr", label: "OMR Auto-Grading", icon: FileCheck },
   { id: "upload", label: "Upload Material", icon: Upload },
@@ -157,6 +159,8 @@ function TeacherPortal() {
             )}
 
             {tab === "omr" && <OmrScanner />}
+
+            {tab === "tests" && <TestBuilder />}
 
             {tab === "upload" && (
               <div className="grid gap-6 lg:grid-cols-2">
