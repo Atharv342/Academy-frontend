@@ -35,8 +35,8 @@ function ExamRegistration() {
   function submit(e: FormEvent) {
     e.preventDefault();
     if (!exam) return;
-    if (!slotId) return toast.error("Pick a slot");
-    if (!form.name.trim() || !form.college.trim() || !form.email.includes("@")) return toast.error("Fill name, college and a valid email");
+    if (!slotId) { toast.error("Pick a slot"); return; }
+    if (!form.name.trim() || !form.college.trim() || !form.email.includes("@")) { toast.error("Fill name, college and a valid email"); return; }
     const reg = register({ examId: exam.id, slotId, ...form });
     setExamId(null);
     setDone(reg);

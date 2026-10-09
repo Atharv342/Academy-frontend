@@ -48,7 +48,7 @@ export const OmrScanner = () => {
             setStudentFiles(files);
 
             // Create a preview of the first file for the UI animation
-            if (files[0].type.startsWith('image/')) {
+            if (files[0] && files[0].type.startsWith('image/')) {
                 setPreviewUrl(URL.createObjectURL(files[0]));
             }
         }
