@@ -6,7 +6,7 @@ import { CalendarCheck, ClipboardList, FileCheck, Megaphone, Table2, Upload } fr
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { SiteNav } from "@/components/SiteNav";
-import { usePortal } from "@/lib/portal-store";
+import { usePortal } from "@/lib/use-portal";
 
 export const Route = createFileRoute("/teacher-portal")({
   head: () => ({

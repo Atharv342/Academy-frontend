@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-import { seedExams, type Exam } from "@/data/exams";
+import { useState, type ReactNode } from "react";
+import { PortalCtx as Ctx, type Store } from "./portal-context";
+import { seedExams } from "@/data/exams";
 
 export type Notice = { id: string; title: string; body: string; audience: string; time: string };
 export type Material = { id: string; title: string; subject: string; track: string; cls: string; topic: string; size: string };
@@ -31,21 +32,6 @@ const seedMaterials: Material[] = [
   { id: "m5", title: "Definite Integration Formula Bank", subject: "Maths", track: "JEE", cls: "Class 12", topic: "Calculus", size: "820 KB" },
   { id: "m6", title: "3D Geometry Practice Set", subject: "Maths", track: "MHT-CET", cls: "Class 12", topic: "Vectors & 3D", size: "1.3 MB" },
 ];
-
-type Store = {
-  notices: Notice[];
-  addNotice: (n: Omit<Notice, "id" | "time">) => void;
-  materials: Material[];
-  addMaterial: (m: Omit<Material, "id">) => void;
-  exams: Exam[];
-  registrations: Registration[];
-  addExam: (e: Exam) => void;
-  register: (r: Omit<Registration, "id" | "hallTicket">) => Registration;
-  results: ExamResult[];
-  addResult: (r: ExamResult) => void;
-};
-
-const Ctx = createContext<Store | null>(null);
 
 export function PortalProvider({ children }: { children: ReactNode }) {
   const [notices, setNotices] = useState(seedNotices);
@@ -91,8 +77,3 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function usePortal() {
-  const c = useContext(Ctx);
-  if (!c) throw new Error("usePortal outside PortalProvider");
-  return c;
-}
