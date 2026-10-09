@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{V as t}from"./dist-RnvJe6NB.js";import{t as n}from"./portal-context-BHFGexPo.js";var r=e(t(),1);function i(){let e=(0,r.useContext)(n);if(!e)throw Error(`usePortal outside PortalProvider`);return e}export{i as t};
