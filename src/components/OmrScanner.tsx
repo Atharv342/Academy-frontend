@@ -20,14 +20,14 @@ interface ExamResult {
     details: QuestionDetail[];
 }
 
-const OPTS = ["A", "B", "C", "D"];
+const OPTS: string[] = ["A", "B", "C", "D"];
 function demoEvaluate(files: File[]): ExamResult[] {
-    const key = Array.from({ length: 20 }, (_, i) => OPTS[(i * 7 + 3) % 4]);
+    const key = Array.from({ length: 20 }, (_, i) => OPTS[(i * 7 + 3) % 4] as string);
     return files.map((f, idx) => {
         let seed = Array.from(f.name).reduce((a, c) => a + c.charCodeAt(0), idx * 31 + f.size);
         const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
         const details: QuestionDetail[] = key.map((correct, i) => {
-            const marked = rnd() < 0.72 ? correct : OPTS[Math.floor(rnd() * 4)];
+            const marked = rnd() < 0.72 ? correct : (OPTS[Math.floor(rnd() * 4)] as string);
             return { q: i + 1, marked, correct, isRight: marked === correct };
         });
         const score = details.filter((d) => d.isRight).length;
