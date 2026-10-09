@@ -1,4 +1,5 @@
 {
+  "homepage": "https://avanishtogether.github.io/koyanaacademyfrontend",
   "name": "tanstack_start_ts",
   "private": true,
   "sideEffects": false,
@@ -9,7 +10,9 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "overrides": {
     "rolldown": "1.2.1"
@@ -83,6 +86,7 @@
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "gh-pages": "^6.3.0",
     "globals": "^15.15.0",
     "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
