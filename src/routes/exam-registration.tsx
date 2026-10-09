@@ -5,7 +5,8 @@ import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { SiteNav } from "@/components/SiteNav";
 import { Modal } from "@/components/motion";
-import { usePortal, type Registration } from "@/lib/portal-store";
+import { type Registration } from "@/lib/portal-store";
+import { usePortal } from "@/lib/use-portal";
 import { celebrate } from "@/lib/celebrate";
 
 export const Route = createFileRoute("/exam-registration")({
