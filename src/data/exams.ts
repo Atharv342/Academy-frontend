@@ -18,7 +18,7 @@ export type Exam = {
   marking: { correct: number; wrong: number };
   regCloses: string;
   /** Optional ISO date-time after which registration is blocked. */
-  regDeadline?: string;
+  regDeadline?: string | undefined;
   slots: Slot[];
   questions: Question[];
 };

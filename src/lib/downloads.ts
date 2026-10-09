@@ -20,7 +20,7 @@ const html = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").repla
 const L = ["A", "B", "C", "D", "E", "F"];
 
 export function markingOf(exam: Exam, i: number) {
-  return exam.questions[i].marks ?? exam.marking;
+  return exam.questions[i]?.marks ?? exam.marking;
 }
 
 export function downloadPaper(exam: Exam, withKey: boolean) {
@@ -31,7 +31,7 @@ export function downloadPaper(exam: Exam, withKey: boolean) {
       const opts = q.options
         .map((o, j) => `<li${withKey && j === q.answer ? ' class="ok"' : ""}>(${L[j]}) ${html(o)}</li>`)
         .join("");
-      return `<div class="q"><p><b>Q${i + 1}.</b> ${html(q.text)} <span class="m">[${q.subject} · +${m.correct} / ${m.wrong}]</span></p><ul>${opts}</ul>${withKey ? `<p class="ans">Answer: (${L[q.answer]}) ${html(q.options[q.answer])}</p>` : ""}</div>`;
+      return `<div class="q"><p><b>Q${i + 1}.</b> ${html(q.text)} <span class="m">[${q.subject} · +${m.correct} / ${m.wrong}]</span></p><ul>${opts}</ul>${withKey ? `<p class="ans">Answer: (${L[q.answer]}) ${html(q.options[q.answer] ?? "")}</p>` : ""}</div>`;
     })
     .join("");
   const doc = `<!doctype html><html><head><meta charset="utf-8"><title>${html(exam.name)}${withKey ? " — Answer Key" : ""}</title><style>body{font-family:Georgia,serif;max-width:800px;margin:30px auto;padding:0 20px}h1{margin:0}.meta{color:#555;font-size:13px;border-bottom:1px solid #999;padding-bottom:10px}.q{margin:16px 0;page-break-inside:avoid}ul{list-style:none;padding-left:18px;margin:6px 0}.m{color:#666;font-size:12px}.ok{font-weight:bold;color:#0a7a2f}.ans{color:#0a7a2f;font-size:13px;margin:4px 0 0 18px}</style></head><body><h1>Koyana Academy — ${html(exam.name)}${withKey ? " (Answer Key)" : ""}</h1><p class="meta">${exam.pattern} · ${exam.durationMin} min · ${exam.questions.length} questions · Max marks ${total} · Marking shown per question as +correct / wrong</p>${body}<script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`;

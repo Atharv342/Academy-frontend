@@ -73,7 +73,7 @@ export function ExamDownloads() {
             <div className="mt-3 flex flex-wrap gap-2">
               <button className={btn} onClick={() => downloadPaper(e, false)}><FileText className="size-3.5" /> Question paper</button>
               <button className={btn} onClick={() => downloadPaper(e, true)}><KeyRound className="size-3.5" /> Answer key + marking</button>
-              <button className={btn} onClick={() => downloadCsv(`${e.id}_marking_scheme.csv`, [["Q", "Subject", "Question", "Correct option", "+Marks", "Wrong marks"], ...e.questions.map((q, i) => { const m = markingOf(e, i); return [i + 1, q.subject, q.text, "ABCDEF"[q.answer], m.correct, m.wrong]; })])}><Download className="size-3.5" /> Marking scheme (CSV)</button>
+              <button className={btn} onClick={() => downloadCsv(`${e.id}_marking_scheme.csv`, [["Q", "Subject", "Question", "Correct option", "+Marks", "Wrong marks"], ...e.questions.map((q, i) => { const m = markingOf(e, i); return [i + 1, q.subject, q.text, "ABCDEF"[q.answer] ?? "", m.correct, m.wrong]; })])}><Download className="size-3.5" /> Marking scheme (CSV)</button>
               <button className={btn} onClick={() => downloadCsv(`${e.id}_results.csv`, resultRows(e.id))}><Trophy className="size-3.5" /> Results sheet</button>
               <button className={btn} onClick={() => downloadCsv(`${e.id}_registrations.csv`, regRows(e.id))}><Users className="size-3.5" /> Registrations</button>
             </div>
