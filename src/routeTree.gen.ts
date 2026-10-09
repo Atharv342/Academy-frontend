@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as ExamRegistrationRouteImport } from './routes/exam-registration'
 import { Route as ParentPortalRouteImport } from './routes/parent-portal'
 import { Route as StudentPortalRouteImport } from './routes/student-portal'
@@ -19,6 +20,11 @@ import { Route as ExamExamIdRouteImport } from './routes/exam.$examId'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdmissionsRoute = AdmissionsRouteImport.update({
+  id: '/admissions',
+  path: '/admissions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExamRegistrationRoute = ExamRegistrationRouteImport.update({
@@ -49,6 +55,7 @@ const ExamExamIdRoute = ExamExamIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admissions': typeof AdmissionsRoute
   '/exam-registration': typeof ExamRegistrationRoute
   '/parent-portal': typeof ParentPortalRoute
   '/student-portal': typeof StudentPortalRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admissions': typeof AdmissionsRoute
   '/exam-registration': typeof ExamRegistrationRoute
   '/parent-portal': typeof ParentPortalRoute
   '/student-portal': typeof StudentPortalRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admissions': typeof AdmissionsRoute
   '/exam-registration': typeof ExamRegistrationRoute
   '/parent-portal': typeof ParentPortalRoute
   '/student-portal': typeof StudentPortalRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admissions'
     | '/exam-registration'
     | '/parent-portal'
     | '/student-portal'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admissions'
     | '/exam-registration'
     | '/parent-portal'
     | '/student-portal'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admissions'
     | '/exam-registration'
     | '/parent-portal'
     | '/student-portal'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdmissionsRoute: typeof AdmissionsRoute
   ExamRegistrationRoute: typeof ExamRegistrationRoute
   ParentPortalRoute: typeof ParentPortalRoute
   StudentPortalRoute: typeof StudentPortalRoute
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admissions': {
+      id: '/admissions'
+      path: '/admissions'
+      fullPath: '/admissions'
+      preLoaderRoute: typeof AdmissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exam-registration': {
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdmissionsRoute: AdmissionsRoute,
   ExamRegistrationRoute: ExamRegistrationRoute,
   ParentPortalRoute: ParentPortalRoute,
   StudentPortalRoute: StudentPortalRoute,
