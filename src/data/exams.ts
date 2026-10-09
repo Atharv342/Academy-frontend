@@ -1,9 +1,18 @@
-export type Question = { id: string; subject: string; text: string; options: string[]; answer: number };
+export type Question = {
+  id: string;
+  subject: string;
+  text: string;
+  options: string[];
+  answer: number;
+  /** Per-question marking; falls back to the exam's default marking. */
+  marks?: { correct: number; wrong: number };
+  difficulty?: "Easy" | "Moderate" | "Hard";
+};
 export type Slot = { id: string; date: string; time: string; capacity: number; booked: number };
 export type Exam = {
   id: string;
   name: string;
-  pattern: "JEE Main" | "MHT-CET" | "NEET";
+  pattern: "JEE Main" | "JEE Advanced" | "MHT-CET" | "NEET" | "Custom";
   description: string;
   durationMin: number;
   marking: { correct: number; wrong: number };
@@ -37,7 +46,41 @@ const bio: Question[] = [
   { id: "b4", subject: "Biology", text: "DNA replication is:", options: ["Conservative", "Dispersive", "Semi-conservative", "Random"], answer: 2 },
 ];
 
+export function qMarks(exam: Exam, q: Question) {
+  return q.marks ?? exam.marking;
+}
+export function maxMarks(exam: Exam) {
+  return exam.questions.reduce((t, q) => t + qMarks(exam, q).correct, 0);
+}
+
+const H = (correct: number, wrong: number) => ({ correct, wrong });
+export const demoVariableTest: Exam = {
+  id: "nyt-multi-pattern-1",
+  name: "NYT JEE Multi-Pattern Grand Mock",
+  pattern: "JEE Advanced",
+  description: "Variable marking · +4/−1, +2/0 and +2/−0.5 sections in one paper",
+  durationMin: 30,
+  marking: { correct: 4, wrong: -1 },
+  regCloses: "30 Oct",
+  slots: [
+    { id: "s1", date: "1 Nov", time: "9:00 AM", capacity: 60, booked: 18 },
+    { id: "s2", date: "1 Nov", time: "2:00 PM", capacity: 60, booked: 7 },
+  ],
+  questions: [
+    { ...phy[2], id: "v1", marks: H(4, -1), difficulty: "Hard" },
+    { ...chem[3], id: "v2", marks: H(4, -1), difficulty: "Hard" },
+    { ...math[1], id: "v3", marks: H(4, -1), difficulty: "Hard" },
+    { ...phy[0], id: "v4", marks: H(2, 0), difficulty: "Easy" },
+    { ...chem[1], id: "v5", marks: H(2, 0), difficulty: "Easy" },
+    { ...math[0], id: "v6", marks: H(2, 0), difficulty: "Easy" },
+    { ...phy[1], id: "v7", marks: H(2, -0.5), difficulty: "Moderate" },
+    { ...chem[0], id: "v8", marks: H(1, -0.5), difficulty: "Moderate" },
+    { ...math[2], id: "v9", marks: H(2, -0.5), difficulty: "Moderate" },
+  ],
+};
+
 export const seedExams: Exam[] = [
+  demoVariableTest,
   {
     id: "jee-mock-4",
     name: "JEE Main All-India Mock 4",
