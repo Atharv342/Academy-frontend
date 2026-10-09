@@ -95,7 +95,7 @@ export function TestBuilder() {
                 <select className={`${input} w-auto`} value={q.subject} onChange={(e) => upd(q.id, { subject: e.target.value })}>
                   {["Physics", "Chemistry", "Maths", "Biology"].map((s) => <option key={s}>{s}</option>)}
                 </select>
-                <select className={`${input} w-auto`} value={q.difficulty} onChange={(e) => upd(q.id, { difficulty: e.target.value as Question["difficulty"] })}>
+                <select className={`${input} w-auto`} value={q.difficulty} onChange={(e) => upd(q.id, { difficulty: e.target.value as "Easy" | "Moderate" | "Hard" })}>
                   {["Easy", "Moderate", "Hard"].map((s) => <option key={s}>{s}</option>)}
                 </select>
                 <div className="flex flex-wrap gap-1">
