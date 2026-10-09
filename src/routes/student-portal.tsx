@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
 import { SiteNav } from "@/components/SiteNav";
 import { Counter } from "@/components/motion";
-import { usePortal } from "@/lib/portal-store";
+import { usePortal } from "@/lib/use-portal";
 import { celebrate } from "@/lib/celebrate";
 
 export const Route = createFileRoute("/student-portal")({

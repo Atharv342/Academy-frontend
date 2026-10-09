@@ -4,7 +4,7 @@ import { AlertTriangle, Camera, Flag, Maximize, ShieldCheck, Timer } from "lucid
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Modal } from "@/components/motion";
-import { usePortal } from "@/lib/portal-store";
+import { usePortal } from "@/lib/use-portal";
 import { celebrate } from "@/lib/celebrate";
 
 export const Route = createFileRoute("/exam/$examId")({

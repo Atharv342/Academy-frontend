@@ -2,7 +2,7 @@ import { Download, FileKey2, Plus, Send, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { maxMarks, qMarks, type Exam, type Question } from "@/data/exams";
-import { usePortal } from "@/lib/portal-store";
+import { usePortal } from "@/lib/use-portal";
 import { downloadAnswerKey, downloadQuestionPaper } from "@/lib/paper-export";
 
 const input = "w-full rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm outline-none focus:border-primary";

@@ -37,7 +37,7 @@ import { SiteNav } from "@/components/SiteNav";
 import { Counter, Modal, Reveal } from "@/components/motion";
 import student from "@/assets/topper-1.jpg";
 import { celebrate } from "@/lib/celebrate";
-import { usePortal } from "@/lib/portal-store";
+import { usePortal } from "@/lib/use-portal";
 
 export const Route = createFileRoute("/parent-portal")({
   head: () => ({
