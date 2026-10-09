@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { OmrScanner } from "@/components/OmrScanner";
 import { TestBuilder } from "@/components/TestBuilder";
+import { ExamDownloads } from "@/components/ExamDownloads";
 import { AnimatePresence, motion } from "framer-motion";
-import { CalendarCheck, ClipboardList, FileCheck, Megaphone, Table2, Upload } from "lucide-react";
+import { CalendarCheck, ClipboardList, Download, FileCheck, Megaphone, Table2, Upload } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { SiteNav } from "@/components/SiteNav";
@@ -24,6 +25,7 @@ const tabs = [
   { id: "attendance", label: "Attendance", icon: CalendarCheck },
   { id: "tests", label: "Test Creator", icon: ClipboardList },
   { id: "marks", label: "Marks Matrix", icon: Table2 },
+  { id: "downloads", label: "Downloads & Deadlines", icon: Download },
   { id: "omr", label: "OMR Auto-Grading", icon: FileCheck },
   { id: "upload", label: "Upload Material", icon: Upload },
   { id: "notices", label: "Broadcast Notice", icon: Megaphone },
@@ -161,6 +163,8 @@ function TeacherPortal() {
             {tab === "omr" && <OmrScanner />}
 
             {tab === "tests" && <TestBuilder />}
+
+            {tab === "downloads" && <ExamDownloads />}
 
             {tab === "upload" && (
               <div className="grid gap-6 lg:grid-cols-2">

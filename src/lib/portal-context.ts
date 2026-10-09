@@ -10,6 +10,7 @@ export type Store = {
   exams: Exam[];
   registrations: Registration[];
   addExam: (e: Exam) => void;
+  updateExam: (id: string, patch: Partial<Exam>) => void;
   register: (r: Omit<Registration, "id" | "hallTicket">) => Registration;
   results: ExamResult[];
   addResult: (r: ExamResult) => void;
