@@ -68,6 +68,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         registrations,
         register,
         addExam: (e) => setExams((l) => [e, ...l.filter((x) => x.id !== e.id)]),
+        updateExam: (id, patch) => setExams((l) => l.map((x) => (x.id === id ? { ...x, ...patch } : x))),
         results,
         addResult: (r) => setResults((l) => [...l.filter((x) => x.examId !== r.examId), r]),
       }}

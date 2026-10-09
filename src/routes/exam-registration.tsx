@@ -8,6 +8,7 @@ import { Modal } from "@/components/motion";
 import { type Registration } from "@/lib/portal-store";
 import { usePortal } from "@/lib/use-portal";
 import { celebrate } from "@/lib/celebrate";
+import { deadlineLabel, isRegOpen } from "@/lib/downloads";
 
 export const Route = createFileRoute("/exam-registration")({
   head: () => ({
@@ -36,6 +37,7 @@ function ExamRegistration() {
   function submit(e: FormEvent) {
     e.preventDefault();
     if (!exam) return;
+    if (!isRegOpen(exam)) { toast.error("Registration deadline has passed"); setExamId(null); return; }
     if (!slotId) { toast.error("Pick a slot"); return; }
     if (!form.name.trim() || !form.college.trim() || !form.email.includes("@")) { toast.error("Fill name, college and a valid email"); return; }
     if (!/^KA-\d{4}-\d{4}$/.test(form.studentId.trim().toUpperCase())) { toast.error("Mock exams are only for enrolled Koyana / NYT Academy students. Enter your Academy ID (e.g. KA-2026-0415) or apply via Admissions."); return; }
@@ -71,13 +73,17 @@ function ExamRegistration() {
                 <p className="mt-1 text-xs text-muted-foreground">{e.description}</p>
                 <div className="mt-4 space-y-1.5 text-xs text-muted-foreground">
                   <p className="flex items-center gap-2"><Clock className="size-3.5" /> {e.durationMin} min · {e.questions.length} questions · {e.questions.some((q) => q.marks) ? "variable marking" : `+${e.marking.correct}/${e.marking.wrong}`}</p>
-                  <p className="flex items-center gap-2"><CalendarClock className="size-3.5" /> Registration closes {e.regCloses}</p>
+                  <p className="flex items-center gap-2"><CalendarClock className="size-3.5" /> {deadlineLabel(e)}</p>
                   <p className="flex items-center gap-2"><Users className="size-3.5" /> {e.slots.length} slots available</p>
                 </div>
                 <div className="mt-auto pt-5">
                   {mine ? (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-success/15 px-3 py-1.5 text-xs font-semibold text-success">
                       <CheckCircle2 className="size-3.5" /> Registered · {mine.hallTicket}
+                    </span>
+                  ) : !isRegOpen(e) ? (
+                    <span className="block w-full rounded-full bg-destructive/15 py-2.5 text-center text-sm font-semibold text-destructive">
+                      Registration closed
                     </span>
                   ) : (
                     <button
