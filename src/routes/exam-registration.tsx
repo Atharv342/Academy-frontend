@@ -14,7 +14,7 @@ export const Route = createFileRoute("/exam-registration")({
       { title: "Mock Exam Registration — Koyana Academy" },
       { name: "description", content: "Register for JEE Main, MHT-CET and NEET mock exams and book your exam slot at Koyana Academy." },
       { property: "og:title", content: "Mock Exam Registration — Koyana Academy" },
-      { property: "og:description", content: "Students from any college can book a slot for online proctored JEE, CET and NEET mocks." },
+      { property: "og:description", content: "Enrolled Koyana Academy students can book a slot for online proctored JEE, CET and NEET mocks." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -118,6 +118,7 @@ function ExamRegistration() {
               })}
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <input className={input} placeholder="Academy student ID (KA-2026-XXXX)" value={form.studentId} onChange={(e) => setForm({ ...form, studentId: e.target.value })} />
               <input className={input} placeholder="Full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
               <input className={input} placeholder="College / school" value={form.college} onChange={(e) => setForm({ ...form, college: e.target.value })} />
               <select className={input} value={form.cls} onChange={(e) => setForm({ ...form, cls: e.target.value })}>

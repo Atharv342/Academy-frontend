@@ -183,7 +183,7 @@ function ExamPage() {
 
       <div className="mx-auto grid max-w-6xl gap-5 p-4 md:grid-cols-[1fr_260px]">
         <section className="glass rounded-3xl p-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{q.subject} · Question {idx + 1}</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{q.subject} · Question {idx + 1} · +{qMarks(exam, q).correct} / {qMarks(exam, q).wrong}</p>
           <p className="mt-3 text-lg font-medium">{q.text}</p>
           <div className="mt-5 space-y-2">
             {q.options.map((o, i) => (
