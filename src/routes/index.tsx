@@ -28,6 +28,7 @@ import {
   type Topper,
 } from "@/data/academy";
 import { celebrate } from "@/lib/celebrate";
+import { academyInfo } from "@/lib/academy-info";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -323,6 +324,24 @@ function PublicPortal() {
         </Stagger>
       </section>
 
+      <section className="mx-auto max-w-6xl px-4 py-10">
+        <Reveal>
+          <div className="glass-strong grid gap-6 rounded-4xl p-8 md:grid-cols-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary">Admissions open</p>
+              <h2 className="mt-2 text-3xl font-bold">NYT Entrance Exam</h2>
+              <p className="mt-2 text-sm text-muted-foreground">For students of Class 8, 9, 10 and 11 who want to join our JEE / NEET / CET batches.</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent">Class 8 to 10</p>
+              <h2 className="mt-2 text-3xl font-bold">NYT Talent Olympiad</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Open to every school. Top ranks win special reserved seats at NYT Academy.</p>
+            </div>
+            <Link to="/admissions" className="neon-surface w-fit rounded-full px-6 py-3 text-sm font-semibold md:col-span-2">Register now</Link>
+          </div>
+        </Reveal>
+      </section>
+
       {/* CTA + footer */}
       <section className="mx-auto max-w-6xl px-4 py-20">
         <Reveal>
@@ -334,13 +353,13 @@ function PublicPortal() {
               </p>
               <div className="mt-8 space-y-3 text-sm text-muted-foreground">
                 <p className="flex items-center gap-3">
-                  <Phone className="size-4 text-primary" /> +91 98765 43210
+                  <Phone className="size-4 text-primary" /> {academyInfo.contactName} · {academyInfo.phone}
                 </p>
                 <p className="flex items-center gap-3">
-                  <Mail className="size-4 text-primary" /> admissions@koyanaacademy.in
+                  <Mail className="size-4 text-primary" /> {academyInfo.college}
                 </p>
                 <p className="flex items-center gap-3">
-                  <MapPin className="size-4 text-primary" /> Shivaji Chowk, Karad, Maharashtra
+                  <MapPin className="size-4 text-primary" /> {academyInfo.address}
                 </p>
               </div>
               <div className="mt-6 flex h-40 items-center justify-center rounded-2xl border border-dashed border-border bg-secondary/40 text-xs uppercase tracking-widest text-muted-foreground">
